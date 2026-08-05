@@ -1,0 +1,70 @@
+{
+ "tsm_month_count": 270,
+ "tsm_month_samples": {
+  "2026-05": {
+   "date": "2026-05-29",
+   "premium": 11.672
+  },
+  "2025-11": {
+   "date": "2025-11-28",
+   "premium": 26.7854
+  },
+  "2024-03": {
+   "date": "2024-03-29",
+   "premium": 12.2697
+  }
+ },
+ "kb_week_samples": {
+  "2026-07-20": {
+   "date": "2026-07-24",
+   "premium": 0.9309,
+   "ff_dr": false,
+   "ff_local": false,
+   "vol_dr_sum": 1557600,
+   "vol_local_sum": 5869464
+  },
+  "2026-06-15": {
+   "date": "2026-06-19",
+   "premium": 3.7052,
+   "ff_dr": true,
+   "ff_local": false,
+   "vol_dr_sum": 1276200,
+   "vol_local_sum": 8321905
+  },
+  "2026-03-02": {
+   "date": "2026-03-06",
+   "premium": 0.1229,
+   "ff_dr": false,
+   "ff_local": false,
+   "vol_dr_sum": 2446300,
+   "vol_local_sum": 8432125
+  }
+ },
+ "kb_week_0615_last_is_ff_dr": true,
+ "kb_last_date": "2026-08-04",
+ "kb_sma20_last": 0.9166,
+ "kb_sma60_last": 1.0399,
+ "kb_sma20_20260701": 1.1357,
+ "kb_1y_avg": 0.4914,
+ "kb_1y_count": 258,
+ "kb_vol_samples": {
+  "2026-07-28": {
+   "vol_dr": 358800,
+   "vol_local": 1297643
+  },
+  "2026-07-30": {
+   "vol_dr": 295900,
+   "vol_local": 1676656
+  },
+  "2026-07-31": {
+   "vol_dr": 300800,
+   "vol_local": 1520142
+  }
+ },
+ "kb_0619_vol": {
+  "vol_dr": null,
+  "vol_local": 2181977,
+  "ff_dr": true
+ },
+ "skhy_row_count": 18
+}

@@ -1,0 +1,25 @@
+{
+  "_comment": "사이트 메타 설정. base_url은 도메인 확정 전 플레이스홀더 - 배포 전 반드시 교체할 것 (canonical, sitemap, robots, OG URL에 사용됨). site_name은 마케팅 문서 2.3절의 [사이트명] 치환값으로 페이지 title 끝에 '- <사이트명>' 형태로 붙는다. 두 값 모두 여기만 바꾸고 python src/build_pages.py 를 재실행하면 전 페이지에 반영된다.",
+  "_domain_status": "2026-08-05: www.kremium.com 은 사용자 소유가 아님이 확인되어(도메인 판매 마켓 등록 상태) 설정하지 않았다. 도메인·브랜드명 확정 후 아래 두 값을 교체하고 재빌드할 것. 커스텀 도메인 사용 시 GitHub Pages는 저장소 Settings의 Custom domain 입력이 실질 기준이며, Actions 배포 방식에서는 CNAME 파일이 필수가 아니다.",
+  "_base_url_format": "끝 슬래시는 있어도 없어도 된다(생성기가 rstrip 처리). 루트 배포 예: https://<계정명>.github.io , 서브경로(project 사이트) 예: https://<계정명>.github.io/<저장소명> . 두 형식 모두 검증 완료(2026-08-05 D-3/D-4). 주의: robots.txt는 도메인 루트에서만 크롤러가 읽으므로 서브경로 배포 시 robots.txt가 무시된다 - 루트(user/org 사이트) 배포 권장.",
+  "site_name": "크리미엄",
+  "base_url": "https://jasony93.github.io",
+
+  "_notices_comment": "D-5 푸터 고지. 값이 비어 있으면 해당 줄을 출력하지 않는다. 1개월 비상업 시험 운영이 끝나면 noncommercial을 비우면 문구가 사라진다.",
+  "notices": {
+    "noncommercial": "본 사이트는 비상업 목적의 시험 운영 페이지입니다. 광고·제휴 등 수익 활동을 하지 않습니다.",
+    "data_source": "시세 데이터 출처: Yahoo Finance (비공식 라이브러리 yfinance 경유).",
+    "contact_email": ""
+  },
+
+  "_verification_comment": "D-6 검색엔진 소유확인 meta 태그. 각 콘솔이 제공하는 content 값(토큰)만 넣는다 - <meta> 태그 전체가 아니라 값만. 비어 있으면 태그를 출력하지 않는다.",
+  "verification": {
+    "google": "",
+    "naver": ""
+  },
+
+  "_analytics_comment": "D-6 분석 도구. head_html에 넣은 내용은 모든 페이지 <head>에 그대로 삽입된다(HTML 원문). 신뢰할 수 있는 제공자의 공식 스니펫만 넣을 것. 비어 있으면 아무것도 삽입하지 않는다. 광고·수익화 장치는 이번 비상업 운영 범위 밖.",
+  "analytics": {
+    "head_html": ""
+  }
+}

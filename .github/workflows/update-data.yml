@@ -1,0 +1,118 @@
+# 데이터 자동 갱신 워크플로 (SEO D5 + v2 F2 장중 갱신)
+#
+# 상태: 준비물 - 이 프로젝트는 아직 git 저장소가 아니므로, GitHub 저장소 생성·푸시
+# 후에 자동으로 활성화된다. 그 전까지는 로컬 대안(src/scripts/ 참고)을 사용한다.
+#
+# 실행 모드 (v2 PRD F2 - 방식 A):
+# - 일일 확정(full): UTC 21:30 = KST 06:30. 전 시장 확정 종가로 히스토리+스냅샷+
+#   F7/F8 통계 전체 재생성. 차트(history JSON)는 이 실행에서만 갱신된다.
+# - 장중 스냅샷(intraday): 아시아 세션(KST 09~17시 매시 - 2026-08-05 BABA 홍콩
+#   편입으로 15시에서 17시로 연장, HKEX 마감 16:00 HKT = 17:00 KST 커버),
+#   아시아 마감 확정(17:10 - 기존 15:40 실행을 통합. KRX·TWSE 종가는 이때 이미
+#   확정이라 정보 손실 없음), 미국 세션(KST 23~06시 매시). 스냅샷만 갱신 -
+#   history 파일 불변. 런던 세션 별도 갱신은 미포함 (SMSN 1종목 대비 실행 비용 -
+#   개발팀 재량 판단. 런던 후반부는 미국 세션 실행이 커버한다).
+#
+# 운영 유의사항 (기획 문서 4절 제안 D):
+# - 스케줄은 정시 보장이 없고 10~30분 지연이 흔하다. 라벨은 "수집 시각" 기준 표기.
+# - 저장소 60일 무활동 시 스케줄 자동 비활성화. 일별 커밋으로 사실상 해소되나
+#   연속 실패 시 재발 가능 - 운영 체크리스트로 관리.
+name: update-data
+
+on:
+  schedule:
+    - cron: "30 21 * * *"      # full: 일일 확정 (KST 06:30)
+    - cron: "0 0-8 * * 1-5"    # intraday: 아시아 세션 (KST 09:00~17:00 매시, 홍콩 포함)
+    - cron: "10 8 * * 1-5"     # intraday: 아시아 마감 확정 반영 (KST 17:10, KRX/TWSE/HKEX)
+    - cron: "0 14-21 * * 1-5"  # intraday: 미국 세션 (KST 23:00~다음날 06:00 매시)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "실행 모드 (full 또는 intraday)"
+        required: false
+        default: "full"
+
+# 데이터 커밋(contents: write)과 Pages 배포(pages/id-token)를 한 워크플로에서
+# 쓰기 위해 최상위에 함께 선언한다. 배포는 별도 job(deploy)에서 수행 -
+# GitHub Pages 배포 job은 environment를 요구하고 artifact를 넘겨받아야 한다.
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 배포 동시 실행 방지 (장중 갱신이 겹칠 때 배포 충돌 방지).
+# in-progress 배포는 취소하지 않는다 - 취소 시 사이트가 중간 상태로 남을 수 있다.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install yfinance
+
+      - name: Determine mode
+        id: mode
+        run: |
+          MODE="intraday"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MODE="${{ github.event.inputs.mode || 'full' }}"
+          elif [ "${{ github.event.schedule }}" = "30 21 * * *" ]; then
+            MODE="full"
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "실행 모드: $MODE"
+
+      - name: Fetch data (full)
+        if: steps.mode.outputs.mode == 'full'
+        run: python src/fetch_data.py
+
+      - name: Fetch data (intraday snapshot only)
+        if: steps.mode.outputs.mode == 'intraday'
+        run: python src/fetch_data.py --intraday
+
+      - name: Build static pages
+        run: python src/build_pages.py
+
+      - name: Run unit tests
+        if: steps.mode.outputs.mode == 'full'
+        run: python -m unittest discover -s src/tests -p "test_*.py"
+
+      - name: Commit and push updates
+        run: |
+          git config user.name "adr-data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/web
+          if git diff --cached --quiet; then
+            echo "변경 없음 - 커밋 생략"
+          else
+            git commit -m "chore: ${{ steps.mode.outputs.mode }} data update ($(date -u +%Y-%m-%dT%H:%M))"
+            git push
+          fi
+
+      # Pages 배포용 아티팩트 업로드 (D-2). src/web 전체가 사이트 루트가 된다.
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: src/web
+
+  # Pages 배포 job - 저장소 Settings > Pages 의 Source를 "GitHub Actions"로
+  # 설정해야 동작한다 (사용자 조치 사항. 절차서 5절).
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

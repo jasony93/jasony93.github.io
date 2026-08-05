@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KB금융 ADR 프리미엄(KB 괴리율) 차트 - 크리미엄</title>
+<meta name="description" content="KB와 원주(105560) 간 프리미엄을 가격·환율·전환비율(1) 근거와 함께 계산. 계산 근거와 일별 차트 제공.">
+<link rel="canonical" href="https://jasony93.github.io/stocks/kb/">
+<meta property="og:title" content="KB금융 ADR 프리미엄(KB 괴리율) 차트 - 크리미엄">
+<meta property="og:description" content="KB와 원주(105560) 간 프리미엄을 가격·환율·전환비율(1) 근거와 함께 계산. 계산 근거와 일별 차트 제공.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jasony93.github.io/stocks/kb/">
+<meta property="og:site_name" content="크리미엄">
+<link rel="stylesheet" href="../../styles.css?v=e5e68cc3">
+<script>
+// 첫 페인트 전 테마 적용 (깜빡임 방지)
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem("theme"); } catch (e) {}
+  var theme = saved || (window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", theme);
+})();
+// 구 해시 URL(#/SKHY) -> 새 경로 리다이렉트
+(function () {
+  var m = location.hash.match(/^#\/([A-Za-z0-9]+)/);
+  if (!m) return;
+  var t = m[1].toLowerCase();
+  var known = ["skhy", "smsn", "tsm", "baba", "kb", "shg", "wf", "pkx", "kep", "skm", "kt", "lpl"];
+  if (known.indexOf(t) >= 0) { location.replace("../../stocks/" + t + "/"); }
+  else if (m[1] === "/" || m[1] === "") { location.replace("../../"); }
+})();
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": "https://jasony93.github.io/"}, {"@type": "ListItem", "position": 2, "name": "KB금융", "item": "https://jasony93.github.io/stocks/kb/"}]}</script>
+</head>
+<body data-page="stock" data-root="../../" data-ticker="KB">
+<header class="site-header">
+  <a class="site-title" href="../../">크리미엄</a>
+  <button id="theme-toggle" class="theme-toggle" type="button"
+          aria-label="라이트/다크 테마 전환">다크 모드</button>
+</header>
+
+<main id="view" class="view">
+<a class="back-link" href="../../">&lt; 전체 종목으로</a>
+<div class="detail-head"><h1 class="detail-name">KB금융</h1><span class="detail-ticker">KB (NYSE) vs 105560 (KRX)</span><span class="badge">ADR</span><span class="badge conv-badge conv-badge-limited" title="DR을 원주로 바꾸는 방향만 자유롭고, 원주를 DR로 만드는 방향은 제한돼 괴리가 오래 유지될 수 있습니다">전환 제한</span></div>
+<div class="detail-premium pos">+0.41%<span class="detail-delta neg">(-1.13%p, 08/04 대비)</span></div>
+<div class="detail-implied">원주 환산가: DR $119.98 -&gt; 약 171,391원 (프리미엄 0.41%)</div>
+<div class="source-grid"><div class="source-item"><div class="source-label">DR 가격 (ADR, USD)</div><div class="source-value">$119.98</div><div class="source-date">2026-08-04 NYSE 종가</div></div><div class="source-item"><div class="source-label">원주 가격 (KRW)</div><div class="source-value">170,700원</div><div class="source-date">2026-08-05 KRX 종가</div></div><div class="source-item"><div class="source-label">환율 (USD/KRW)</div><div class="source-value">1,428.50</div><div class="source-date">2026-08-04 기준</div></div><div class="source-item"><div class="source-label">전환비율 r</div><div class="source-value">1 (ADS 1주 = 보통주 1주)</div><div class="source-date">예탁은행 공시 기준 (설정 파일 관리)</div></div><div class="source-item"><div class="source-label">원주 시가총액</div><div class="source-value">59.9조원 (약 $420억)</div><div class="source-date">2026-08-05 종가 기준</div></div></div>
+<p class="chart-note snap-footnote">장중 값은 거래소 지연(최대 20분)과 갱신 주기(최대 60분)로 실제 현재가와 다를 수 있습니다.</p>
+<section class="conv-section"><h3>전환 현황</h3><div class="conv-structure"><svg class="conv-diagram" viewBox="0 0 304 104" role="img" aria-label="DR에서 원주로 가는 전환은 자유롭지만, 원주에서 DR로 가는 전환은 제한됩니다">
+<defs>
+<marker id="ah-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--conv-open)"/></marker>
+<marker id="ah-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--conv-blocked)"/></marker>
+</defs>
+<rect x="1" y="26" width="86" height="52" rx="9" fill="var(--badge-bg)" stroke="var(--border)"/>
+<text x="44" y="57" text-anchor="middle" font-size="13" fill="var(--text)">원주</text>
+<rect x="217" y="26" width="86" height="52" rx="9" fill="var(--badge-bg)" stroke="var(--border)"/>
+<text x="260" y="57" text-anchor="middle" font-size="13" fill="var(--text)">ADR</text>
+<line x1="92" y1="32" x2="212" y2="32" stroke="var(--conv-blocked)" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#ah-up)"/>
+<text x="152" y="20" text-anchor="middle" font-size="11" fill="var(--conv-blocked)">원주 -&gt; DR 제한</text>
+<g stroke="var(--conv-blocked)" stroke-width="2.5" stroke-linecap="round"><line x1="146" y1="26" x2="158" y2="38"/><line x1="158" y1="26" x2="146" y2="38"/></g>
+<line x1="212" y1="72" x2="92" y2="72" stroke="var(--conv-open)" stroke-width="2.5" marker-end="url(#ah-open)"/>
+<text x="152" y="95" text-anchor="middle" font-size="11" fill="var(--conv-open)">DR -&gt; 원주 자유</text>
+</svg><div class="conv-structure-text"><span class="badge conv-badge conv-badge-limited">전환 제한</span><p>원주 -&gt; ADR 신규 예탁은 소각분 범위 내 + 초과 시 발행사 동의 필요 (20-F 예탁계약 조항)</p></div></div><div class="conv-unknown"><div class="conv-row"><span>현재 전환율</span><strong>-</strong></div><div class="conv-row"><span>시장별 주식 금액</span><strong>-</strong></div><p class="source-date">데이터 미확인 - DR 발행 잔량의 신뢰할 수 있는 출처를 확보하지 못했습니다. Yahoo의 DR 발행주식수 필드는 전사 발행량의 ADS 환산치로 확인되어 사용하지 않습니다(검증 기각).</p></div><p class="chart-note">두 시장 금액의 합은 시가총액과 일치하지 않을 수 있습니다. DR 시장 금액은 프리미엄이 반영된 DR 가격 기준이기 때문입니다.</p></section>
+<div class="period-tabs"><button type="button" class="period-tab">1M</button><button type="button" class="period-tab">3M</button><button type="button" class="period-tab">6M</button><button type="button" class="period-tab active">1Y</button><button type="button" class="period-tab">MAX</button></div>
+<div class="chart-wrap" id="detail-chart"><p class="loading">차트 데이터를 불러오는 중...</p><noscript><p class="chart-note">일별 차트 표시는 JavaScript가 필요합니다. 위의 프리미엄·원천값은 최신 스냅샷 기준입니다.</p></noscript></div>
+<p class="chart-note">일별 프리미엄: 같은 캘린더 날짜의 원주 종가와 DR 시장 종가로 계산합니다. 원주 장 마감 수 시간 후 DR 시장이 마감하므로, 이 수치는 "DR 시장이 원주 종가 대비 얼마나 앞서갔나"로 해석됩니다. 한쪽 시장 휴장일은 직전 거래일 종가를 이월해 계산하며 툴팁에 (이월)로 표시합니다.</p>
+<div class="formula-box"><h3>계산 방식</h3><code>프리미엄(%) = (DR 가격(USD) * 환율 / (원주 가격 * 전환비율 r) - 1) * 100</code><ul><li>DR 가격: 예탁증서(ADR) 1주의 시장 가격 (USD)</li><li>원주 가격: 현지 시장(KRX) 원주 1주 가격 (KRW)</li><li>환율: USD/KRW (USD 1달러당 KRW)</li><li>전환비율 r: DR 1주가 대표하는 원주 수 = 1 (ADS 1주 = 보통주 1주)</li><li>프리미엄 &gt; 0 이면 DR가 원주보다 비쌉니다(프리미엄), &lt; 0 이면 디스카운트입니다.</li></ul><h3>보조 지표</h3><code>전일 대비(%p) = 오늘 프리미엄 - 직전 데이터 포인트 프리미엄
+SMA_n(d) = 직전 n개 데이터 포인트(거래일 기준, d 포함) 프리미엄의 단순 평균
+기간 평균 = 현재 화면에 표시 중인 구간의 프리미엄 단순 평균
+주/월 단위 값 = 해당 주(ISO, 월-일)/캘린더 월의 마지막 거래일 값
+주/월 단위 거래량 = 해당 기간 실거래일 거래량 합계</code><h3>전환 현황 지표</h3><code>DR 물량의 원주 환산: N_dr_local = N_dr * r
+현재 전환율(%) = N_dr_local / N_total * 100  (DR 형태로 예탁된 비중)
+한도 소진율(%) = N_dr_local / L * 100  (L = 전환한도, 확인 종목만)
+DR 시장 금액 = N_dr * P_dr  (USD)
+현지 시장 금액 = (N_total - N_dr_local) * P_local</code><ul><li>N_dr: DR 발행 잔량(ADS 주 수), N_total: 원주 총발행주식수</li><li>SMA는 일 단위 시계열 기준으로 정의하며 주/월 단위 화면에서는 표시하지 않습니다.</li></ul><p>본 정보는 투자 조언이 아니며, 데이터 오류·지연이 있을 수 있습니다.</p></div>
+</main>
+
+<footer class="site-footer">
+  <p>본 사이트의 모든 정보는 참고용이며 <strong>투자 조언이 아닙니다</strong>. 데이터는 지연·종가 기반이며 정확성을 보장하지 않습니다.</p>
+  <p class="footer-notice">본 사이트는 비상업 목적의 시험 운영 페이지입니다. 광고·제휴 등 수익 활동을 하지 않습니다.</p>
+  <p class="footer-notice">시세 데이터 출처: Yahoo Finance (비공식 라이브러리 yfinance 경유).</p>
+  <p class="footer-sub">프리미엄(%) = (DR 가격 * 환율 / (원주 가격 * 전환비율) - 1) * 100</p>
+</footer>
+
+<script id="page-data" type="application/json">{"id": "KB", "local_currency": "KRW", "fx_label": "USD/KRW"}</script>
+<script src="../../app.js?v=84deca25"></script>
+</body>
+</html>
