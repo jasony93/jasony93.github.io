@@ -10,6 +10,7 @@
 | 2026-08-04 | 테스트팀 SEO 리포트 FAIL 3건 수정 (2026-08-04-seo-implementation-test.md): (1) FAIL #1 - md_to_html에 코드 펜스 지원(내부는 이스케이프만 - 수식 보호), 여러 줄 목록 항목 병합(리스트 버퍼링, ul/ol 내 p 중첩 제거), 기울임 규칙을 별표 안쪽 비공백일 때만으로 조정(곱셈 * 보호) (2) FAIL #2 - 가로줄(---) 분기에서 flush_faq 호출로 FAQ 답변에 말미 면책 문구 유입 차단 (3) FAIL #4 - update_data.bat를 CRLF + ASCII 전용으로 재작성, 실제 실행으로 fetch 11/11 + build 16파일 + 로그 생성 확인. 파서 회귀 테스트 8건 추가(총 54건). FAIL #3(메인 title)은 관리자 판정에 따라 코드 유지(마케팅 문서 정정) |
 | 2026-08-04 | v2 기능 F1~F8 구현 (docs/planning/2026-08-04-v2-features-prd.md): F1 드래그 패닝(포인터/터치 구분/키보드, MAX 비활성), F2 장중 스냅샷 모드(--intraday, 지연 라벨 표준, 히스토리 확정 종가 분리), F3 일/주/월 단위(클라이언트 다운샘플), F4 전일 대비 %p, F5 SMA20/60+기간 평균(기본 꺼짐), F6 거래량 서브패널(vol_dr/vol_local, 이월 null), F7 전환 현황(검증 A/B + 수동 폴백 + 미확인 폴백, SKHY만 수동값), F8 시가총액 카드. 신설 8절 참고. 단위 테스트 54 -> 81건 |
 | 2026-08-04 | F1 패닝 미동작 버그 수정 (사용자 보고): 원인 - 포인터 리스너·캡처가 svg 요소에 부착돼 있어 드래그 첫 move 틱의 재렌더(wrap.innerHTML 초기화)가 svg를 파괴하면서 제스처가 끊김(제스처당 1틱만 반영 = 체감상 미동작). 수정 - 리스너·캡처를 재렌더에 유지되는 wrap(#detail-chart)에 1회 부착으로 이전, 윈도우 기하는 state.pan으로 매 렌더 갱신, 커서/텍스트 선택 방지/touch-action을 CSS 클래스로 이전. 검증 - Node 하니스 test_panning.mjs 신설(rAF 동기 실행 적대 조건에서 드래그 시퀀스 14항목: 연속 이동·경계 클램프·터치 세로/가로 구분·MAX 비활성·키보드), unittest 통합(TestPanningHarness). 총 85건. 브라우저 실조작 재확인은 사용자·테스트팀 몫으로 남김 |
+| 2026-08-05 | 거래량 기본 표시 전환 + 배포 확정(관리자 직접 수정분에 대한 문서 정합·검증): (1) **거래량 기본값 vol: false -> true** (사용자 3회 요청 - 토글 없이 최초 렌더부터 표시). 시리즈 기본값은 원주 유지. **SMA20/60·기간 평균은 기본 꺼짐 유지.** v2 PRD 공통 원칙 1·6절, feature-review 6.4절에 "거래량만 예외" 명시하고 완료 기준 갱신 (2) 배포 B안 확정 - base_url `https://jasony93.github.io`, site_name `크리미엄`, **user 사이트 = 루트 배포**라 robots.txt·sitemap 정상 동작(서브경로 이슈 없음). 워크플로 주석을 루트 배포 기준으로 정리 (3) 회귀 검증: 거래량 기본 표시로 인한 영향 25항목 점검(데이터 없는 심볼·주/월 초기 진입·이월 포인트·패닝/호버·단기 종목) 후 상시 테스트로 편입(`src/tests/test_vol_default.mjs`). check_deploy.py에 SKIP 판정 도입(로컬 점검 오탐 제거). 단위 테스트 111 -> 112건 |
 | 2026-08-05 | 캐시버스팅 + 전환 구조 시각화 (사용자 지시 3건 중 2건 완료, 1건 보류): (1) **정적 자산 캐시버스팅** - `styles.css`/`app.js` 참조에 내용 SHA-256 앞 8자리 쿼리(`?v=<hash>`) 부착. 내용이 바뀔 때만 값이 변해 캐시 효율 유지(타임스탬프 방식 비채택). 전 15페이지 적용. **"거래량 기본값이 원주로 안 보인다"는 사용자 보고의 근본 원인** - 코드(volSeries: "local")·localStorage는 정상이었고 브라우저가 구 app.js를 계속 쓴 것이었다. 매번 Ctrl+F5를 안내해 온 것 자체가 이 결함의 증상 (2) **전환 구조 시각화** - tickers.json에 `conversion_type`(both_free / dr_to_local_free / 미기재=미조사) 신설, 전환 현황 섹션에 인라인 SVG 다이어그램(원주 <-> DR, 막힌 방향은 점선+회색+X, 열린 방향은 실선+강조색) + 전환 자유도 배지를 메인 카드·상세 상단에 추가. 신규 색 변수 --conv-open/--conv-blocked(9.2절). 외부 이미지·아이콘 라이브러리 미사용(의존성 0 유지) (3) 배포 도메인 설정은 **관리자 지시로 보류**(www.kremium.com이 사용자 소유가 아님 - site.json 플레이스홀더 유지, CNAME 미생성). 단위 테스트 97 -> 111건 |
 | 2026-08-05 | KSD 리트머스 테스트 + 공개 배포 선행 작업: (1) **KSD "DR전환가능주식수량" 판정 = (ii) 추가 전환 여유(headroom), N_dr 아님** -> tickers.json 미반영(부정확 수치 표시 금지). 상세 docs/development/2026-08-05-ksd-litmus-test.md. 부수 성과로 SKHY 한도 소진을 공식 데이터로 확인해 설정 `_f7_refs`에 근거 보강 (2) 배포 선행 D-1~D-7 완료: .gitignore 신설(**데이터 커밋 포함으로 정책 확정** - 4절의 "커밋 대상 아님" 서술 정정), 워크플로에 Pages 배포 job 추가(upload-pages-artifact + deploy-pages, permissions 병존, concurrency), base_url 4형식·서브경로 배포 검증, 푸터 고지 2줄(site.json notices), 검증 태그·분석 스크립트 head 주입(site.json verification/analytics, 빈 값이면 미출력), 배포 점검 스크립트 src/scripts/check_deploy.py. 단위 테스트 89 -> 97건 |
 | 2026-08-05 | 거래량 UX 2건 + 분석 1건 (사용자 지시): (1) F6 거래량 기본 시리즈를 DR -> **원주(local)**로 변경, 시리즈 버튼 순서도 원주 우선 (2) **호버-거래량 바 연동** - 프리미엄 차트 크로스헤어가 활성화한 포인트의 거래량 바를 강조. 색상(등락 의미)을 덮지 않도록 색 변경 대신 (a) 나머지 바 불투명도 0.35 감쇠 (b) 대상 바에 fill 없는 테두리 링 방식 채택. 툴팁에 해당 시점 거래량+등락 방향 표시(거래량 토글 꺼짐 시 미표시), 주/월 단위는 집계 합계 바가 그대로 강조, 이월 포인트는 바가 없어 링 숨김. 터치는 기존 툴팁 경로(touchstart/touchmove) 공유. 마우스 이탈·패닝 시작 시 강조 해제 (3) 프리미엄-거래량 상관·평균회귀 분석 -> docs/development/2026-08-05-premium-volume-analysis.md (스크립트 docs/analysis/premium_volume_analysis.py - 파이프라인·웹 코드 무변경). 단위 테스트 89건 유지(Node 하니스에 기본값·호버 연동 8항목 추가) |
@@ -114,16 +115,27 @@ src/
                         - **git 커밋 대상**(2026-08-05 D-1 확정): GitHub Pages가
                         저장소 파일을 그대로 게시하므로 데이터가 커밋돼 있어야
                         사이트에서 차트가 뜬다. 갱신 워크플로도 이 경로를 커밋한다.
-  tests/
-    test_premium.py     단위 테스트 16건 (네트워크 불필요): 수식, 이월·플래그,
-                        그리드 합집합, 설정 무결성(환율 매핑·비율), 실패 병합
-    test_build_pages.py 단위 테스트 30건 (네트워크 불필요): 프리렌더 핵심 텍스트,
-                        메타태그·JSON-LD·sitemap·robots, 마크다운 변환(양쪽 원고
-                        형식), FAQ 추출, 갱신 실패 프리렌더
+  scripts/
+    update_data.bat     로컬 갱신 배치 (CRLF·ASCII 전용)
+    register_task.ps1   Windows 작업 스케줄러 등록 (D5 로컬 대안)
+    check_deploy.py     배포 후 점검 (D-7). 점검 URL != site.json base_url 이면
+                        canonical·절대 URL 검사를 SKIP 처리(로컬 점검 오탐 방지)
+  tests/                (파이썬 112건 - Node 하니스 3종 포함)
+    test_premium.py     계산·설정·파이프라인 + Node 하니스 위임 실행
+    test_build_pages.py 프리렌더(메타태그·JSON-LD·sitemap·robots·가이드 변환·
+                        캐시버스팅·배포 설정·전환 구조 시각화)
+    test_panning.mjs    F1 드래그 패닝 회귀 (재렌더 중 제스처 유지)
+    test_chart.mjs      F6 거래량 색상·HKD 표기·호버 강조
+    test_vol_default.mjs 거래량 기본 표시 회귀 (2026-08-05): 데이터 없는 심볼,
+                        주/월 초기 진입, 이월 포인트, 패닝·호버 상호작용
     verify_samples.py   실데이터 검증 (네트워크 필요): 수기 계산 대조,
                         공모일 검산, 환율 교차, 휴장일 이월, 메타 무결성
+docs/analysis/          프리미엄-거래량 상관 분석 스크립트 (파이프라인과 분리)
 docs/marketing/guides/  가이드 원고 (마케팅팀 작성 md) + 형식 안내 README
-.github/workflows/update-data.yml  일별 자동 갱신 워크플로 (D5 - 저장소 생성 후 활성화)
+.github/workflows/update-data.yml  자동 갱신 + Pages 배포 워크플로
+                        (B안 user 사이트 = 루트 배포. Settings > Pages Source를
+                        "GitHub Actions"로 설정해야 게시된다)
+.gitignore              데이터(src/web/data)는 커밋 대상, 캐시·로그·로컬 설정 제외
 .claude/launch.json     로컬 미리보기 서버 정의 (포트 8765)
 ```
 
@@ -361,7 +373,9 @@ history_start 절단, 스냅샷 최신값 선택, 설정 무결성(비율 11종 
   F1 computeWindow(기간=길이, endMs=끝. 포인터 드래그 - 터치는 수평 10px 임계값
   판별, touch-action: pan-y, 키보드 10% 이동, MAX·짧은 종목 비활성)·툴바
   ("과거 구간" 라벨 + "최신으로"), F6 거래량 서브패널(별도 SVG, 프리미엄 축과
-  분리). 전 지표 기본 꺼짐(공통 원칙 1). 의존성 0 유지.
+  분리). 의존성 0 유지.
+  **기본값 (2026-08-05 개정)**: 거래량은 **기본 표시(vol: true) + 시리즈 원주**
+  (사용자 지시로 공통 원칙 1의 예외). SMA20/60·기간 평균은 기본 꺼짐 유지.
 - **F2 스케줄 (.github/workflows/update-data.yml)**: full(UTC 21:30) +
   intraday(아시아 KST 09-15시 매시, 마감 확정 15:40, 미국 KST 23-06시 매시).
   런던 전용 세션은 미포함(SMSN 1종목 대비 실행 비용 - PRD가 위임한 재량 판단.

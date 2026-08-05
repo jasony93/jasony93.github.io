@@ -370,16 +370,26 @@ class TestPanningHarness(unittest.TestCase):
 
     def test_chart_calcs(self):
         """F6 거래량 등락 색상·HKD 표기 (Node 하니스 test_chart.mjs 위임 실행)."""
+        self._run_node_harness("test_chart.mjs", "차트 계산")
+
+    def test_volume_default_regression(self):
+        """거래량 기본 표시 전환 회귀 (test_vol_default.mjs 위임 실행).
+
+        데이터 없는 심볼·주/월 단위·이월 포인트·패닝/호버 상호작용 점검.
+        """
+        self._run_node_harness("test_vol_default.mjs", "거래량 기본 표시")
+
+    def _run_node_harness(self, filename: str, label: str):
         import shutil
         import subprocess
         node = shutil.which("node")
         if not node:
             self.skipTest("node 미설치 - 하니스 실행 불가")
-        mjs = Path(__file__).resolve().parent / "test_chart.mjs"
+        mjs = Path(__file__).resolve().parent / filename
         res = subprocess.run([node, str(mjs)], capture_output=True, text=True,
                              encoding="utf-8", errors="replace", timeout=60)
         self.assertEqual(res.returncode, 0,
-                         f"차트 계산 하니스 실패:\n{res.stdout}\n{res.stderr}")
+                         f"{label} 하니스 실패:\n{res.stdout}\n{res.stderr}")
 
 
 class TestFailureMerge(unittest.TestCase):

@@ -1,7 +1,11 @@
 # 데이터 자동 갱신 워크플로 (SEO D5 + v2 F2 장중 갱신)
 #
-# 상태: 준비물 - 이 프로젝트는 아직 git 저장소가 아니므로, GitHub 저장소 생성·푸시
-# 후에 자동으로 활성화된다. 그 전까지는 로컬 대안(src/scripts/ 참고)을 사용한다.
+# 배포 형태 (2026-08-05 확정 - B안): GitHub user 사이트
+#   저장소 jasony93/jasony93.github.io -> https://jasony93.github.io (루트 배포).
+#   루트 배포이므로 robots.txt·sitemap.xml이 정상 동작하고, 생성 페이지의 자산
+#   경로가 전부 상대경로라 추가 조정이 필요 없다.
+#   사용자 조치 1건: 저장소 Settings > Pages 의 Source를 "GitHub Actions"로 설정
+#   해야 아래 deploy job이 실제로 게시된다.
 #
 # 실행 모드 (v2 PRD F2 - 방식 A):
 # - 일일 확정(full): UTC 21:30 = KST 06:30. 전 시장 확정 종가로 히스토리+스냅샷+
