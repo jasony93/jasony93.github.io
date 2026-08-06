@@ -24,6 +24,7 @@ import html
 import json
 import re
 import sys
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
@@ -39,6 +40,21 @@ FORMULA_TEXT = "프리미엄(%) = (DR 가격 * 환율 / (원주 가격 * 전환�
 
 # ---- 페이지별 title / meta description (마케팅 문서 2.3절 템플릿) ----
 # 제목·설명은 빌드 시점 수치를 넣지 않는다 (검색 결과 스냅샷과 불일치 방지).
+# 메인 랜딩 소개 블록 (2026-08-06 사용자 지시). 문구 수정은 여기만 고치면 된다.
+# 원칙: 간결하게(장황 금지), 계산 근거 공개라는 차별점 명시, 푸터의 "투자 조언
+# 아님" 고지와 중복하지 않는다.
+INTRO_HEADLINE = "해외에 상장된 우리 주식, 지금 얼마나 비싼가?"
+INTRO_BODY = (
+    "미국·런던·홍콩에 상장된 예탁증서(ADR·GDR)와 현지 시장 원주의 가격 차이를 "
+    "매일 계산해 보여줍니다. SK하이닉스·삼성전자·TSMC를 포함한 12개 종목이 대상이며, "
+    "환율과 전환비율(예탁증서 1주가 대표하는 원주 수)을 반영해 계산합니다. "
+    "쓰인 가격·환율·전환비율과 각각의 기준 시점을 그대로 공개하니 직접 검산할 수 있습니다."
+)
+INTRO_READING = ("보는 법: 양수(빨강)는 해외가 더 비싼 상태(프리미엄), "
+                 "음수(파랑)는 더 싼 상태(디스카운트)입니다.")
+INTRO_GUIDE_SLUG = "adr-premium"      # 링크 대상 가이드 슬러그
+INTRO_GUIDE_TEXT = "ADR 프리미엄이란? 계산법과 해석"
+
 MAIN_TITLE = Template("한국·대만 ADR 프리미엄 추적 - $site_name")
 MAIN_DESC = ("SK하이닉스 SKHY, 삼성전자 GDR, TSMC 등 11종목의 ADR 프리미엄(괴리율)을 "
              "계산 근거와 함께 매일 차트로 보여드립니다.")
@@ -395,9 +411,23 @@ def build_card_html(t: dict, root: str) -> str:
     return "".join(parts)
 
 
+def build_intro_html(guides: list[dict], root: str = "") -> str:
+    """메인 랜딩 소개 블록. 프리렌더 HTML에 텍스트로 포함된다(SEO)."""
+    link = ""
+    if any(g["slug"] == INTRO_GUIDE_SLUG for g in guides):
+        link = (f' <a class="intro-link" href="{root}guide/{INTRO_GUIDE_SLUG}/">'
+                f'{html.escape(INTRO_GUIDE_TEXT)} &gt;</a>')
+    return ('<section class="intro">'
+            f'<h1 class="intro-headline">{html.escape(INTRO_HEADLINE)}</h1>'
+            f'<p class="intro-body">{html.escape(INTRO_BODY)}</p>'
+            f'<p class="intro-reading">{html.escape(INTRO_READING)}{link}</p>'
+            "</section>")
+
+
 def build_main_content(meta: dict, guides: list[dict], root: str = "") -> str:
     gen = meta.get("generated_at", "").replace("T", " ").replace("Z", " UTC")
-    out = [f'<p class="updated-at">데이터 생성: {gen}· 일별 종가 기반 (지연 데이터)</p>'
+    out = [build_intro_html(guides, root),
+           f'<p class="updated-at">데이터 생성: {gen}· 일별 종가 기반 (지연 데이터)</p>'
            if gen else "", '<div class="card-grid">']
     for tid in meta["order"]:
         t = meta["tickers"].get(tid)
@@ -745,10 +775,28 @@ _INLINE_PATTERNS = [
     (re.compile(r"`([^`]+)`"), r"<code>\1</code>"),
     (re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)"),
      r'<a href="\2" rel="noopener">\1</a>'),
-    # 본문에 그대로 쓴 URL 자동 링크 (위 마크다운 링크가 만든 href 내부는 제외)
-    (re.compile(r'(?<!["=>])(https?://[^\s<>"\')]+)'),
-     r'<a href="\1" rel="noopener">\1</a>'),
+    # 본문에 그대로 쓴 URL 자동 링크 (위 마크다운 링크가 만든 href 내부는 제외).
+    # 표시 글자는 도메인만 쓴다 - 긴 주소가 본문에 노출되면 가독성이 나쁘다.
+    # href는 항상 전체 URL을 유지한다.
+    (re.compile(r'(?<!["=>])(https?://[^\s<>"\')]+)'), lambda m: _bare_link(m.group(1))),
 ]
+
+
+def _display_domain(url: str) -> str:
+    """맨 URL의 화면 표시용 도메인 (www. 제거). 파싱 실패 시 원본 반환."""
+    try:
+        netloc = urllib.parse.urlparse(url).netloc
+    except ValueError:
+        return url
+    if not netloc:
+        return url
+    if netloc.startswith("www."):
+        netloc = netloc[4:]
+    return netloc
+
+
+def _bare_link(url: str) -> str:
+    return f'<a href="{url}" rel="noopener">{_display_domain(url)}</a>'
 
 
 def _inline(text: str) -> str:

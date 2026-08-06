@@ -3,6 +3,7 @@
 실행: python -m unittest discover -s src/tests -p "test_*.py" -v
 """
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -611,6 +612,88 @@ class TestDeploymentPrep(unittest.TestCase):
         self.assertNotIn('href="/styles.css', main + stock)
         self.assertIn('class="card" href="stocks/skhy/"', main)
         self.assertIn('data-root="../../"', stock)
+
+
+class TestLandingIntro(unittest.TestCase):
+    """작업 1 (2026-08-06): 메인 랜딩 소개 블록."""
+
+    def build(self, guides=None):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        out = Path(tmp.name)
+        bp.build_all(fake_meta(), SITE, guides or [], out)
+        return out
+
+    def test_intro_prerendered_as_text(self):
+        """크롤러가 읽어야 하므로 JS 없이 텍스트로 존재해야 한다."""
+        main = (self.build() / "index.html").read_text(encoding="utf-8")
+        self.assertIn('class="intro"', main)
+        self.assertIn(bp.INTRO_HEADLINE, main)
+        self.assertIn("12개 종목", main)
+        self.assertIn("그대로 공개", main)          # 차별점 서술
+        self.assertIn("양수(빨강)", main)            # 읽는 법
+        self.assertIn("음수(파랑)", main)
+
+    def test_intro_precedes_card_grid(self):
+        main = (self.build() / "index.html").read_text(encoding="utf-8")
+        self.assertLess(main.index('class="intro"'), main.index('class="card-grid"'))
+
+    def test_intro_headline_is_h1(self):
+        main = (self.build() / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<h1 class="intro-headline">', main)
+        self.assertEqual(main.count("<h1"), 1)  # 메인의 h1은 하나만
+
+    def test_guide_link_present_only_when_guide_exists(self):
+        guide = {"slug": "adr-premium", "title": "T", "description": "D",
+                 "html": "<p>x</p>", "faqs": []}
+        with_guide = (self.build([guide]) / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="guide/adr-premium/"', with_guide)
+        self.assertIn(bp.INTRO_GUIDE_TEXT, with_guide)
+        without = (self.build([]) / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn("intro-link", without)
+
+    def test_intro_only_on_main(self):
+        out = self.build()
+        stock = (out / "stocks/skhy/index.html").read_text(encoding="utf-8")
+        self.assertNotIn('class="intro"', stock)
+
+    def test_no_duplicate_disclaimer(self):
+        """푸터의 '투자 조언 아님' 고지와 중복 서술을 넣지 않는다."""
+        main = (self.build() / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(main.count("투자 조언이 아닙니다"), 1)
+        intro = re.search(r'<section class="intro">.*?</section>', main, re.S).group(0)
+        self.assertNotIn("투자 조언", intro)
+
+
+class TestBareUrlDisplay(unittest.TestCase):
+    """작업 2 (2026-08-06): 링크 표시 글자 개선."""
+
+    def test_markdown_link_syntax(self):
+        h, _ = bp.md_to_html("출처: [KB증권 해설](https://kbthink.com/a.html) 참고")
+        self.assertIn('<a href="https://kbthink.com/a.html" rel="noopener">'
+                      "KB증권 해설</a>", h)
+
+    def test_bare_url_shows_domain_only(self):
+        url = "https://www.sec.gov/Archives/edgar/data/0002120882/x.htm"
+        h, _ = bp.md_to_html(f"출처 {url} 끝")
+        self.assertIn(f'<a href="{url}" rel="noopener">sec.gov</a>', h)
+        self.assertNotIn(f">{url}<", h)  # 표시 글자로 전체 URL 노출 금지
+
+    def test_display_domain_helper(self):
+        self.assertEqual(bp._display_domain("https://www.nasdaq.com/a/b"), "nasdaq.com")
+        self.assertEqual(bp._display_domain("https://github.com/x/y"), "github.com")
+        self.assertEqual(bp._display_domain("http://kr.investing.com/a"),
+                         "kr.investing.com")
+
+    def test_href_preserved_for_bare_url(self):
+        url = "https://finance.yahoo.com/markets/stocks/articles/a-b-c-005605511.html"
+        h, _ = bp.md_to_html(f"({url})")
+        self.assertIn(f'href="{url}"', h)
+
+    def test_markdown_link_not_double_processed(self):
+        h, _ = bp.md_to_html("[표시](https://example.com/a)")
+        self.assertEqual(h.count("<a "), 1)
+        self.assertIn(">표시</a>", h)
 
 
 class TestCacheBusting(unittest.TestCase):

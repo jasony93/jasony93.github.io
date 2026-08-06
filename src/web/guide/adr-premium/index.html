@@ -11,7 +11,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://jasony93.github.io/guide/adr-premium/">
 <meta property="og:site_name" content="크리미엄">
-<link rel="stylesheet" href="../../styles.css?v=e5e68cc3">
+<link rel="stylesheet" href="../../styles.css?v=40cbd6d7">
 <script>
 // 첫 페인트 전 테마 적용 (깜빡임 방지)
 (function () {
@@ -43,13 +43,13 @@
 <main id="view" class="view">
 <article class="guide-article"><h1>ADR 프리미엄(괴리율)이란? 계산법과 해석</h1>
 <h2>ADR란 무엇인가</h2>
-<p>ADR(American Depositary Receipt, 미국예탁증서)는 해외 기업의 주식(원주)을 예탁은행에 보관하고, 그 원주를 근거로 미국 거래소에서 발행·유통하는 증권이다. 미국 투자자는 ADR를 통해 한국·대만 등 해외 주식을 달러로, 미국 장중에 거래할 수 있다. SK하이닉스는 2026년 7월 10일 나스닥에 ADR(티커 SKHY)를 상장했다. (출처: KB증권 해설 <a href="https://kbthink.com/investment/issues/sk-hynix-nasdaq-adr.html" rel="noopener">https://kbthink.com/investment/issues/sk-hynix-nasdaq-adr.html</a> , 인베스팅닷컴 <a href="https://kr.investing.com/equities/sk-hynix-adr" rel="noopener">https://kr.investing.com/equities/sk-hynix-adr</a> )</p>
-<p>중요한 점은 ADR 1주가 원주 1주와 같지 않다는 것이다. 종목마다 "전환비율"이 정해져 있다. 예를 들어 SK하이닉스는 ADR 10주가 원주 1주에 해당한다(SEC 상장 신고서 424B4: <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm</a> ). 그래서 ADR 가격에 환율만 곱하면 계산이 틀린다.</p>
+<p>ADR(American Depositary Receipt, 미국예탁증서)는 해외 기업의 주식(원주)을 예탁은행에 보관하고, 그 원주를 근거로 미국 거래소에서 발행·유통하는 증권이다. 미국 투자자는 ADR를 통해 한국·대만 등 해외 주식을 달러로, 미국 장중에 거래할 수 있다. SK하이닉스는 2026년 7월 10일 나스닥에 ADR(티커 SKHY)를 상장했다. (출처: <a href="https://kbthink.com/investment/issues/sk-hynix-nasdaq-adr.html" rel="noopener">KB증권 해설</a>, <a href="https://kr.investing.com/equities/sk-hynix-adr" rel="noopener">인베스팅닷컴</a>)</p>
+<p>중요한 점은 ADR 1주가 원주 1주와 같지 않다는 것이다. 종목마다 "전환비율"이 정해져 있다. 예를 들어 SK하이닉스는 ADR 10주가 원주 1주에 해당한다 (<a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm" rel="noopener">SEC 상장신고서 424B4</a>). 그래서 ADR 가격에 환율만 곱하면 계산이 틀린다.</p>
 <h2>ADR 프리미엄(괴리율)이란</h2>
 <p>같은 회사의 주식이 두 시장에서 거래되면 두 가격이 정확히 일치하지 않는 순간이 생긴다. ADR 가격이 원주를 환산한 이론가보다 비싸면 "프리미엄", 싸면 "디스카운트"라고 하며, 이 차이의 비율을 괴리율이라고도 부른다.</p>
-<p>SK하이닉스 ADR는 상장 직후 프리미엄이 약 3%였다가 상장 사흘 만에 51%를 돌파했고 (헤럴드경제 <a href="https://biz.heraldcorp.com/article/10809827" rel="noopener">https://biz.heraldcorp.com/article/10809827</a> ), 이후 28%, 16% 수준으로 축소되는 등 크게 변동했다(파이낸셜뉴스 <a href="https://www.fnnews.com/news/202607281438264228" rel="noopener">https://www.fnnews.com/news/202607281438264228</a> ). 이 수치가 연일 경제 뉴스의 헤드라인이 됐다.</p>
+<p>SK하이닉스 ADR는 상장 직후 프리미엄이 약 3%였다가 상장 사흘 만에 51%를 돌파했고 (<a href="https://biz.heraldcorp.com/article/10809827" rel="noopener">헤럴드경제</a>), 이후 28%, 16% 수준으로 축소되는 등 크게 변동했다(<a href="https://www.fnnews.com/news/202607281438264228" rel="noopener">파이낸셜뉴스</a>). 이 수치가 연일 경제 뉴스의 헤드라인이 됐다.</p>
 <h2>프리미엄은 왜 생기나</h2>
-<ul><li><strong>전환 제약</strong>: 원주와 ADR 간 전환이 자유롭지 않으면 차익거래가 막혀 가격 차이가 유지된다. SK하이닉스는 ADR 전환 한도(총 주식의 2.5%)가 소진되어, 기존 ADR가 해지되지 않는 한 원주를 추가로 ADR로 바꿀 수 없는 상태가 프리미엄 유지 요인으로 지목됐다(야후 파이낸스 <a href="https://finance.yahoo.com/markets/stocks/articles/sk-hynix-share-conversion-mean-005605511.html" rel="noopener">https://finance.yahoo.com/markets/stocks/articles/sk-hynix-share-conversion-mean-005605511.html</a> ). TSMC ADR(TSM)도 대만 원주를 ADR로 바꾸기 어려운 구조 때문에 프리미엄이 장기간 유지되는 사례로 꼽힌다(분석 리포지토리 <a href="https://github.com/chungderson/tsmc-adr-premium" rel="noopener">https://github.com/chungderson/tsmc-adr-premium</a> ).</li><li><strong>수급 불균형</strong>: 상장 직후 미국 시장에서 사려는 수요 대비 유통 물량이 적으면 가격이 이론가를 웃돈다. SK하이닉스 ADR 프리미엄도 단기 유동성 제약에 따른 수급 요인으로 분석됐다(인베스팅닷컴 <a href="https://kr.investing.com/news/stock-market-news/article-2015570" rel="noopener">https://kr.investing.com/news/stock-market-news/article-2015570</a> ).</li><li><strong>거래시간·환율 차이</strong>: 한국 장과 미국 장은 겹치지 않아 "같은 순간의 두 가격"이 존재하지 않고, 그 사이의 뉴스와 환율 변동이 가격 차이로 나타난다.</li></ul>
+<ul><li><strong>전환 제약</strong>: 원주와 ADR 간 전환이 자유롭지 않으면 차익거래가 막혀 가격 차이가 유지된다. SK하이닉스는 ADR 전환 한도(총 주식의 2.5%)가 소진되어, 기존 ADR가 해지되지 않는 한 원주를 추가로 ADR로 바꿀 수 없는 상태가 프리미엄 유지 요인으로 지목됐다(<a href="https://finance.yahoo.com/markets/stocks/articles/sk-hynix-share-conversion-mean-005605511.html" rel="noopener">야후 파이낸스</a>). TSMC ADR(TSM)도 대만 원주를 ADR로 바꾸기 어려운 구조 때문에 프리미엄이 장기간 유지되는 사례로 꼽힌다(<a href="https://github.com/chungderson/tsmc-adr-premium" rel="noopener">TSMC 프리미엄 분석 리포지토리</a>).</li><li><strong>수급 불균형</strong>: 상장 직후 미국 시장에서 사려는 수요 대비 유통 물량이 적으면 가격이 이론가를 웃돈다. SK하이닉스 ADR 프리미엄도 단기 유동성 제약에 따른 수급 요인으로 분석됐다(<a href="https://kr.investing.com/news/stock-market-news/article-2015570" rel="noopener">인베스팅닷컴</a>).</li><li><strong>거래시간·환율 차이</strong>: 한국 장과 미국 장은 겹치지 않아 "같은 순간의 두 가격"이 존재하지 않고, 그 사이의 뉴스와 환율 변동이 가격 차이로 나타난다.</li></ul>
 <h2>계산법 (수식)</h2>
 <p>용어: P_dr = ADR 가격(달러), P_local = 원주 가격(현지통화), FX = 달러당 환율, r = ADR 1주가 대표하는 원주 수.</p>
 <pre><code>ADR 이론가(달러) = (P_local * r) / FX
@@ -57,10 +57,10 @@
 <p><strong>SK하이닉스 실제 사례 (공모 시점)</strong>: 2026년 7월 9일 원주 종가 2,186,000원, 공모가 $149, r = 0.1, 당일 환율 약 1,503원을 넣으면</p>
 <pre><code>이론가 = 2,186,000 * 0.1 / 1,503 = 약 $145.4
 프리미엄 = (149 / 145.4 - 1) * 100 = 약 +2.5%</code></pre>
-<p>언론이 보도한 "상장 직후 프리미엄 약 3%"와 부합한다(뉴스1 <a href="https://www.news1.kr/finance/general-stock/6241336" rel="noopener">https://www.news1.kr/finance/general-stock/6241336</a> ).</p>
+<p>언론이 보도한 "상장 직후 프리미엄 약 3%"와 부합한다(<a href="https://www.news1.kr/finance/general-stock/6241336" rel="noopener">뉴스1</a>).</p>
 <p>반대로 ADR 가격을 원주 기준으로 환산할 수도 있다. 예를 들어 SKHY가 $168.49이고 환율이 1,500원이면 원주 환산가는 168.49 * 1,500 / 0.1 = 약 252만원이다. 단순히 환율만 곱하면 틀리고, 반드시 전환비율(10:1)을 반영해야 한다.</p>
 <h2>"역김치 프리미엄"이란</h2>
-<p>암호화폐 시장에서 한국 거래 가격이 해외보다 비싼 현상을 "김치 프리미엄"이라 불러 왔다. SK하이닉스 ADR는 반대로 해외(미국) 가격이 한국 본주보다 비싸므로, 언론이 이를 "역김치 프리미엄"이라고 표현했다(서울경제 <a href="https://www.sedaily.com/article/20069098" rel="noopener">https://www.sedaily.com/article/20069098</a> ). 뜻은 이 글의 ADR 프리미엄과 같다.</p>
+<p>암호화폐 시장에서 한국 거래 가격이 해외보다 비싼 현상을 "김치 프리미엄"이라 불러 왔다. SK하이닉스 ADR는 반대로 해외(미국) 가격이 한국 본주보다 비싸므로, 언론이 이를 "역김치 프리미엄"이라고 표현했다(<a href="https://www.sedaily.com/article/20069098" rel="noopener">서울경제</a>). 뜻은 이 글의 ADR 프리미엄과 같다.</p>
 <h2>해석 시 주의점</h2>
 <ol><li><strong>거래시간이 겹치지 않는다.</strong> 한국 장(09:00~15:30)과 미국 정규장(한국시간 밤 ~새벽)은 겹치는 시간이 없다. 따라서 프리미엄은 "미국 시장이 한국 종가 대비 얼마나 앞서갔나"에 가깝고, 어떤 시점의 가격·환율을 썼는지 확인해야 한다.</li><li><strong>다음 날 주가 예고가 아니다.</strong> ADR 환산가가 곧 다음 날 국내 시초가를 의미하지 않는다. 두 시장의 수급과 환율이 다르기 때문이다.</li><li><strong>휴장일 처리.</strong> 한쪽 시장만 쉬는 날은 직전 거래일 가격으로 계산되므로, 그런 날의 수치는 이월된 값임을 감안해야 한다.</li><li><strong>비용과 세금.</strong> ADR와 원주는 거래 수수료·환전 비용·과세(해외주식 양도소득세 등)가 달라, 프리미엄 수치가 곧 실현 가능한 차익을 뜻하지 않는다.</li></ol>
 <h2>자주 묻는 질문 (FAQ)</h2>

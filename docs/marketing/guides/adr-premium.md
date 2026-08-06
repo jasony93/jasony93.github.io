@@ -13,13 +13,12 @@ ADR(American Depositary Receipt, 미국예탁증서)는 해외 기업의 주식(
 예탁은행에 보관하고, 그 원주를 근거로 미국 거래소에서 발행·유통하는 증권이다.
 미국 투자자는 ADR를 통해 한국·대만 등 해외 주식을 달러로, 미국 장중에 거래할 수
 있다. SK하이닉스는 2026년 7월 10일 나스닥에 ADR(티커 SKHY)를 상장했다.
-(출처: KB증권 해설 https://kbthink.com/investment/issues/sk-hynix-nasdaq-adr.html ,
-인베스팅닷컴 https://kr.investing.com/equities/sk-hynix-adr )
+(출처: [KB증권 해설](https://kbthink.com/investment/issues/sk-hynix-nasdaq-adr.html),
+[인베스팅닷컴](https://kr.investing.com/equities/sk-hynix-adr))
 
 중요한 점은 ADR 1주가 원주 1주와 같지 않다는 것이다. 종목마다 "전환비율"이
-정해져 있다. 예를 들어 SK하이닉스는 ADR 10주가 원주 1주에 해당한다(SEC 상장
-신고서 424B4:
-https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm ).
+정해져 있다. 예를 들어 SK하이닉스는 ADR 10주가 원주 1주에 해당한다
+([SEC 상장신고서 424B4](https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm)).
 그래서 ADR 가격에 환율만 곱하면 계산이 틀린다.
 
 ## ADR 프리미엄(괴리율)이란
@@ -29,9 +28,9 @@ https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424
 "디스카운트"라고 하며, 이 차이의 비율을 괴리율이라고도 부른다.
 
 SK하이닉스 ADR는 상장 직후 프리미엄이 약 3%였다가 상장 사흘 만에 51%를 돌파했고
-(헤럴드경제 https://biz.heraldcorp.com/article/10809827 ), 이후 28%, 16% 수준으로
-축소되는 등 크게 변동했다(파이낸셜뉴스
-https://www.fnnews.com/news/202607281438264228 ). 이 수치가 연일 경제 뉴스의
+([헤럴드경제](https://biz.heraldcorp.com/article/10809827)), 이후 28%, 16% 수준으로
+축소되는 등 크게 변동했다([파이낸셜뉴스](https://www.fnnews.com/news/202607281438264228)).
+이 수치가 연일 경제 뉴스의
 헤드라인이 됐다.
 
 ## 프리미엄은 왜 생기나
@@ -39,15 +38,12 @@ https://www.fnnews.com/news/202607281438264228 ). 이 수치가 연일 경제 �
 - **전환 제약**: 원주와 ADR 간 전환이 자유롭지 않으면 차익거래가 막혀 가격 차이가
   유지된다. SK하이닉스는 ADR 전환 한도(총 주식의 2.5%)가 소진되어, 기존 ADR가
   해지되지 않는 한 원주를 추가로 ADR로 바꿀 수 없는 상태가 프리미엄 유지 요인으로
-  지목됐다(야후 파이낸스
-  https://finance.yahoo.com/markets/stocks/articles/sk-hynix-share-conversion-mean-005605511.html ).
+  지목됐다([야후 파이낸스](https://finance.yahoo.com/markets/stocks/articles/sk-hynix-share-conversion-mean-005605511.html)).
   TSMC ADR(TSM)도 대만 원주를 ADR로 바꾸기 어려운 구조 때문에 프리미엄이
-  장기간 유지되는 사례로 꼽힌다(분석 리포지토리
-  https://github.com/chungderson/tsmc-adr-premium ).
+  장기간 유지되는 사례로 꼽힌다([TSMC 프리미엄 분석 리포지토리](https://github.com/chungderson/tsmc-adr-premium)).
 - **수급 불균형**: 상장 직후 미국 시장에서 사려는 수요 대비 유통 물량이 적으면
   가격이 이론가를 웃돈다. SK하이닉스 ADR 프리미엄도 단기 유동성 제약에 따른
-  수급 요인으로 분석됐다(인베스팅닷컴
-  https://kr.investing.com/news/stock-market-news/article-2015570 ).
+  수급 요인으로 분석됐다([인베스팅닷컴](https://kr.investing.com/news/stock-market-news/article-2015570)).
 - **거래시간·환율 차이**: 한국 장과 미국 장은 겹치지 않아 "같은 순간의 두 가격"이
   존재하지 않고, 그 사이의 뉴스와 환율 변동이 가격 차이로 나타난다.
 
@@ -69,8 +65,7 @@ ADR 이론가(달러) = (P_local * r) / FX
 프리미엄 = (149 / 145.4 - 1) * 100 = 약 +2.5%
 ```
 
-언론이 보도한 "상장 직후 프리미엄 약 3%"와 부합한다(뉴스1
-https://www.news1.kr/finance/general-stock/6241336 ).
+언론이 보도한 "상장 직후 프리미엄 약 3%"와 부합한다([뉴스1](https://www.news1.kr/finance/general-stock/6241336)).
 
 반대로 ADR 가격을 원주 기준으로 환산할 수도 있다. 예를 들어 SKHY가 $168.49이고
 환율이 1,500원이면 원주 환산가는 168.49 * 1,500 / 0.1 = 약 252만원이다. 단순히
@@ -80,8 +75,8 @@ https://www.news1.kr/finance/general-stock/6241336 ).
 
 암호화폐 시장에서 한국 거래 가격이 해외보다 비싼 현상을 "김치 프리미엄"이라
 불러 왔다. SK하이닉스 ADR는 반대로 해외(미국) 가격이 한국 본주보다 비싸므로,
-언론이 이를 "역김치 프리미엄"이라고 표현했다(서울경제
-https://www.sedaily.com/article/20069098 ). 뜻은 이 글의 ADR 프리미엄과 같다.
+언론이 이를 "역김치 프리미엄"이라고 표현했다([서울경제](https://www.sedaily.com/article/20069098)).
+뜻은 이 글의 ADR 프리미엄과 같다.
 
 ## 해석 시 주의점
 

@@ -107,6 +107,43 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 14px;
 }
 
+/* ---- 메인 랜딩 소개 블록 (2026-08-06) ---- */
+.intro {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 0 0 14px;
+}
+.intro-headline {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.intro-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.intro-reading {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.intro-link {
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.intro-link:hover { text-decoration: underline; }
+@media (max-width: 560px) {
+  .intro { padding: 13px 14px; }
+  .intro-headline { font-size: 17px; }
+  .intro-body { font-size: 13.5px; }
+}
+
 /* ---- 메인 카드 그리드 ---- */
 .card-grid {
   display: grid;
