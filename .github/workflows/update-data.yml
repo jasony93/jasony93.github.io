@@ -24,6 +24,12 @@
 name: update-data
 
 on:
+  # 코드·원고 변경을 main에 올리면 즉시 재빌드·배포한다 (mode=build - 데이터 수집 생략).
+  # 이 트리거가 없으면 코드를 푸시해도 다음 정기 실행 전까지 사이트가 바뀌지 않는다.
+  # 워크플로 자신의 데이터 커밋(GITHUB_TOKEN 사용)은 새 실행을 유발하지 않으므로
+  # 무한 루프가 생기지 않는다.
+  push:
+    branches: [main]
   schedule:
     - cron: "30 21 * * *"      # full: 일일 확정 (KST 06:30)
     - cron: "0 0-8 * * 1-5"    # intraday: 아시아 세션 (KST 09:00~17:00 매시, 홍콩 포함)
@@ -32,7 +38,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "실행 모드 (full 또는 intraday)"
+        description: "실행 모드 (full, intraday, build 중 하나)"
         required: false
         default: "full"
 
@@ -67,7 +73,9 @@ jobs:
         id: mode
         run: |
           MODE="intraday"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "push" ]; then
+            MODE="build"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             MODE="${{ github.event.inputs.mode || 'full' }}"
           elif [ "${{ github.event.schedule }}" = "30 21 * * *" ]; then
             MODE="full"
@@ -86,8 +94,10 @@ jobs:
       - name: Build static pages
         run: python src/build_pages.py
 
+      # build 모드(코드 푸시)에서도 테스트를 돌린다 - 네트워크 불필요·수초 소요이며,
+      # 깨진 코드가 그대로 배포되는 것을 막는 관문 역할을 한다.
       - name: Run unit tests
-        if: steps.mode.outputs.mode == 'full'
+        if: steps.mode.outputs.mode == 'full' || steps.mode.outputs.mode == 'build'
         run: python -m unittest discover -s src/tests -p "test_*.py"
 
       - name: Commit and push updates
