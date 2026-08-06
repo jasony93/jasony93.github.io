@@ -14,7 +14,7 @@
 
   "_verification_comment": "D-6 검색엔진 소유확인 meta 태그. 각 콘솔이 제공하는 content 값(토큰)만 넣는다 - <meta> 태그 전체가 아니라 값만. 비어 있으면 태그를 출력하지 않는다.",
   "verification": {
-    "google": "",
+    "google": "awEyar43Z5ClZHmGhIsxER21AYQvNLZ_QZ8KQ0EwgG8",
     "naver": ""
   },
 
